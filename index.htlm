@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionnaire destiné à Flore Thalouarn, directrice générale des services de la ville de Saint Brieuc</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h2 { color: #2C3E50; }
+        label { font-weight: bold; }
+        textarea { width: 100%; height: 100px; margin-bottom: 15px; }
+        button { padding: 10px; background-color: #3498DB; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #2980B9; }
+    </style>
+</head>
+<body>
+    <h1>Questionnaire destiné à Flore Thalouarn, directrice générale des services de la ville de Saint Brieuc</h1>
+    <form id="questionnaire">
+        <h2>Questions de Hari</h2>
+        <label>Le droit administratif joue un rôle clé dans votre métier. Quelle importance a-t-il dans la gestion d’une collectivité ?</label>
+        <textarea name="q1"></textarea>
+        <label>Quelles sont vos missions principales en tant que Directrice Générale des Services ?</label>
+        <textarea name="q2"></textarea>
+        <label>Quel a été votre parcours avant d’occuper ce poste ? Quelles étapes ont été clés pour votre évolution ?</label>
+        <textarea name="q3"></textarea>
+
+        <h2>Questions de Talla</h2>
+        <label>Votre métier repose-t-il davantage sur des connaissances théoriques acquises à l’université ou sur l’expérience du terrain ?</label>
+        <textarea name="q4"></textarea>
+        <label>Pensez-vous qu’il y aura une transformation majeure dans la gestion des collectivités avec les nouvelles technologies et les contraintes budgétaires croissantes ?</label>
+        <textarea name="q5"></textarea>
+        <label>Quels conseils donneriez-vous à un étudiant en AES qui souhaiterait évoluer dans la fonction publique territoriale ?</label>
+        <textarea name="q6"></textarea>
+
+        <h2>Questions d’Amélie</h2>
+        <label>Comment imaginez-vous l'évolution du métier de DGS dans les années à venir ?</label>
+        <textarea name="q7"></textarea>
+        <label>Quelle est l'importance de l'innovation et du numérique dans la modernisation des services municipaux ?</label>
+        <textarea name="q8"></textarea>
+        <label>Quels sont les projets majeurs que vous avez pilotés et leurs avantages dans votre parcours ? Ou quels projets vous tiennent particulièrement à cœur ?</label>
+        <textarea name="q9"></textarea>
+
+        <h2>Questions de Sacha</h2>
+        <label>Vous travaillez en étroite collaboration avec des élus, tout en étant garante de la neutralité administrative. Avez-vous déjà été confrontée à des dilemmes éthiques dans l’exercice de vos fonctions ? Comment les avez-vous gérés ?</label>
+        <textarea name="q10"></textarea>
+        <label>Le droit administratif repose souvent sur des décisions du Conseil d’État. Y a-t-il un arrêt ou une règle juridique qui a particulièrement marqué votre gestion de la collectivité ?</label>
+        <textarea name="q11"></textarea>
+        <label>En tant qu’étudiant en AES, je m’intéresse à la gestion et au pilotage des organisations. Pensez-vous que des compétences acquises dans le secteur privé (comme la gestion d’une PME) peuvent être utiles pour un poste de DGS ?</label>
+        <textarea name="q12"></textarea>
+    </form>
+    
+    <button onclick="telechargerPDF()">Télécharger en PDF</button>
+    
+    <script>
+        function telechargerPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            let y = 10;
+            let maxWidth = 180;
+            doc.setFontSize(10);
+            doc.text("Questionnaire destiné à Flore Thalouarn, directrice générale des services de la ville de Saint Brieuc", 10, y);
+            y += 10;
+            
+            document.querySelectorAll("label, textarea").forEach(element => {
+                if (y > 270) { doc.addPage(); y = 10; }
+                if (element.tagName === "LABEL") {
+                    let lines = doc.splitTextToSize(element.innerText, maxWidth);
+                    doc.text(lines, 10, y);
+                    y += lines.length * 6;
+                } else if (element.tagName === "TEXTAREA") {
+                    let response = element.value.trim() || "(Pas de réponse)";
+                    let responseLines = doc.splitTextToSize(response, maxWidth);
+                    doc.text(responseLines, 10, y);
+                    y += responseLines.length * 6;
+                }
+            });
+            
+            doc.save("Questionnaire_Flore_Thalouarn.pdf");
+        }
+    </script>
+</body>
+</html>
